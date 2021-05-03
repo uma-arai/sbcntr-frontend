@@ -1,0 +1,52 @@
+#version: "3.7"
+#services:
+#  db:
+#    image: postgres:12-alpine
+#    container_name: postgres_host
+#    volumes:
+#      - data:/var/lib/postgresql/data
+##    env_file: ./.env.local #Here we are using the already existing .env.local file
+#    environment:
+#      POSTGRES_PASSWORD: sbcntr-password
+#      POSTGRES_USER: sbcntr-user
+#      POSTGRES_DB: sbcntrdb
+#    ports:
+#      - "5432:5432"
+#volumes:
+#  data:
+#
+version: "3.7"
+services:
+  db:
+    image: mysql:5.7
+    network_mode: "host"
+    platform: linux/amd64
+    container_name: mysql_host
+    ## ここのhostnameでappコンテナから接続しにいく
+#    hostname: sbcntrdb
+    volumes:
+      - ./database:/var/lib/minesql
+    # Here we are using the already existing .env.local file
+    environment:
+      MYSQL_USER: sbcntruser
+      MYSQL_PASSWORD: sbcntrpass
+      MYSQL_DATABASE: sbcntrapp
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+  app:
+    image: sbcntr-backend:latest
+    depends_on:
+      - "db"
+    container_name: sbcntr-backend
+    environment:
+      DB_HOST: localhost
+      DB_USERNAME: sbcntruser
+      DB_PASSWORD: sbcntrpass
+      DB_NAME: sbcntrapp
+    network_mode: "host"
+    ports:
+      - "3100:80"
+#    links:
+#      - db
+
