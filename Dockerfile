@@ -13,7 +13,7 @@ RUN apk add --update --no-cache --virtual build-deps \
 RUN apk add --upgrade --no-cache vips-dev build-base --repository https://alpine.global.ssl.fastly.net/alpine/v3.10/community/
 COPY . .
 
-# install production dependencies  
+# install production dependencies
 RUN yarn install --pure-lockfile --production
 RUN npx prisma generate
 # Save production depenencies installed so we can later copy them in the production image
@@ -37,8 +37,8 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/db ./
 
-ENV PORT 3000
-EXPOSE 3000
+ENV PORT 80
+EXPOSE 80
 
 CMD [ "npm","start" ]
-# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl 
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl
