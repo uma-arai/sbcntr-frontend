@@ -11,5 +11,6 @@ export const useAllData = (conditions: { favorite: boolean } | null) => {
     : {};
   const [data] = useQuery(getData, params, { suspense: false });
 
+  // TODO: res?.result.data;
   return data;
 };

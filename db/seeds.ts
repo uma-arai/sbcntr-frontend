@@ -8,10 +8,10 @@ import db from "./index";
  * realistic data.
  */
 const seed = async () => {
-  await addItems();
+  //await addItems();
   await db.notification.create({
     data: {
-      title: "Notif3",
+      title: "Notif5",
       description: "Antique darts board",
       category: "information",
       updatedAt: undefined,

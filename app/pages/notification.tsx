@@ -5,16 +5,12 @@ import { Dashboard as SbcntrDashboard } from "../components/organisms/dashboard"
 import CopyrightComponent from "../components/molecules/copyright";
 import NotificationForm from "../components/templates/NotificationForm";
 
-type NotificationPageProps = {
-  userId: string;
-};
-
-const NotificationPage: BlitzPage<NotificationPageProps> = ({ userId }) => {
+const NotificationPage: BlitzPage = () => {
   const router = useRouter();
   return (
     <>
       <SbcntrDashboard title={"Sbcntr-Frontend Notification"}>
-        <NotificationForm onSuccess={undefined} onClose={()=>console.log('')}/>
+        <NotificationForm router={router} />
       </SbcntrDashboard>
       <CopyrightComponent />
     </>

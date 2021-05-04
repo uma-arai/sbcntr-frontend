@@ -1,6 +1,6 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button, Snackbar } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -8,8 +8,10 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import MailIcon from "@material-ui/icons/Mail";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import Avatar from "@material-ui/core/Avatar";
-import { useMutation } from "blitz";
+import { BlitzRouter, useMutation } from "blitz";
 import updateNotification from "../../notification/mutations/updateNotification";
+import { useNotifications } from "../../hooks/useNotifications";
+import { Alert as SbcntrAlert } from "../atoms/alert";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,53 +29,86 @@ export const useStyles = makeStyles((theme) => ({
  *
  */
 type NotificationFormProps = {
-  onSuccess?: (params: any) => void;
-  onClose: () => void;
+  router: BlitzRouter;
 };
 
-/**
- *
- * @param {((params: any) => void) | undefined} onSuccess
- * @param {() => void} onClose
- * @returns {JSX.Element}
- * @constructor
- */
-export const NotificationForm = ({
-  onSuccess,
-  onClose,
-}: NotificationFormProps) => {
+export const NotificationForm = ({ router }: NotificationFormProps) => {
   const classes = useStyles();
+  let notifications = useNotifications();
   const [readNotifications] = useMutation(updateNotification);
+
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState({ body: "", status: false });
+  const handleBarOpen = () => {
+    setOpen(true);
+  };
+  const handleBarClose = () => {
+    setOpen(false);
+    router.reload();
+  };
+
   return (
     <div className={classes.root}>
-      <List className={classes.container}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={async () => {
-            try {
-              await readNotifications();
-            } catch (error) {}
-          }}
+      <Snackbar
+        open={open}
+        autoHideDuration={3 * 1000}
+        onClose={handleBarClose}
+      >
+        <SbcntrAlert
+          onClose={handleBarClose}
+          severity={message.status ? "success" : "error"}
         >
-          すべて既読
-        </Button>
+          {message.body}
+        </SbcntrAlert>
+      </Snackbar>
+      <List className={classes.container}>
         <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <MailIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={async () => {
+              try {
+                const result = await readNotifications();
+                if (result.error) {
+                  setMessage({
+                    body: "通知の既読処理に失敗しました",
+                    status: false,
+                  });
+                } else {
+                  setMessage({
+                    body: "すべての通知を既読にしました",
+                    status: true,
+                  });
+                }
+              } catch (error) {
+                setMessage({
+                  body: "通知の既読処理に失敗しました",
+                  status: false,
+                });
+              } finally {
+                handleBarOpen();
+              }
+            }}
+          >
+            すべて既読
+          </Button>
         </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <DraftsIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Work" secondary="Jan 7, 2014" />
-        </ListItem>
+        {notifications?.map((notif, index) => {
+          return (
+            <ListItem key={index}>
+              <ListItemAvatar>
+                <Avatar>{notif.unread ? <MailIcon /> : <DraftsIcon />}</Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={`${notif.title}`}
+                secondary={notif.description}
+              />
+              <ListItemAvatar>
+                <p>{notif.createdAt}</p>
+              </ListItemAvatar>
+            </ListItem>
+          );
+        })}
       </List>
     </div>
   );
