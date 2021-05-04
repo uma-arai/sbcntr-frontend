@@ -1,5 +1,4 @@
 import { useQuery } from "blitz";
-import getNotificationCount from "app/notification/queries/getNotificationCount";
 import getNotifications from "../notification/queries/getNotifications";
 
 export const useNotifications = () => {
