@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
  * @returns {JSX.Element}
  * @constructor
  */
-const ItemCard: React.FC<ItemCardProps> = (props): JSX.Element => {
+export const ItemCard = (props: ItemCardProps): JSX.Element => {
   const { favorite, date, id } = props;
   const name = props.name || "default name";
   const title = props.title || "default title";
@@ -104,5 +104,3 @@ const ItemCard: React.FC<ItemCardProps> = (props): JSX.Element => {
     </Card>
   );
 };
-
-export default ItemCard;

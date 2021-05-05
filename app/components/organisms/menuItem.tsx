@@ -4,6 +4,11 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import * as React from "react";
 
+/**
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const MainListItems = () => {
   const router = useRouter();
 

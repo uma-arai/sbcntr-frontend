@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react"
-import Typography from "@material-ui/core/Typography"
+import React, { ReactNode } from "react";
+import Typography from "@material-ui/core/Typography";
 
-interface TitleProps {
-  children: ReactNode,
-}
+type TitleProps = {
+  children: ReactNode;
+};
 
 /**
  *
@@ -11,12 +11,12 @@ interface TitleProps {
  * @returns {JSX.Element}
  * @constructor
  */
-const BoardTitle:React.FC<TitleProps> = ({children}) => {
+const BoardTitle: React.FC<TitleProps> = ({ children }) => {
   return (
     <Typography component="h2" variant="h6" color="primary" gutterBottom>
       {children}
     </Typography>
   );
-}
+};
 
 export default BoardTitle;

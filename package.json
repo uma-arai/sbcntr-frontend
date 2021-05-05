@@ -27,6 +27,12 @@
       "eslint --fix"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc && lint-staged && pretty-quick --staged",
+      "pre-push": "tsc && npm run lint && npm run test"
+    }
+  },
   "dependencies": {
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
