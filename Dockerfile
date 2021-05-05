@@ -40,5 +40,5 @@ COPY --from=builder /app/db ./
 ENV PORT 80
 EXPOSE 80
 
-CMD [ "npm","start" ]
+CMD [ "npm","run","start:prd" ]
 # HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl
