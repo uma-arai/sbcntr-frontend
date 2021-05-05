@@ -68,7 +68,7 @@ const Home: BlitzPage = () => {
   );
 };
 
-Home.redirectAuthenticatedTo = "/top";
+Home.redirectAuthenticatedTo = "/";
 Home.getLayout = (page) => <Layout title="Home">{page}</Layout>;
 
 export default Home;

@@ -1,7 +1,14 @@
 import { useRouter } from "blitz";
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -18,7 +25,14 @@ const useStyles = makeStyles((theme) => ({
  */
 export const UserInfo = () => {
   const classes = useStyles();
-  const router = useRouter();
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -26,11 +40,7 @@ export const UserInfo = () => {
         className={classes.button}
         color="primary"
         variant="contained"
-        onClick={async (event) => {
-          router.push({
-            pathname: "/login",
-          });
-        }}
+        onClick={handleClickOpen}
       >
         ログイン
       </Button>
@@ -38,14 +48,28 @@ export const UserInfo = () => {
         className={classes.button}
         color="default"
         variant="text"
-        onClick={async (event) => {
-          router.push({
-            pathname: "/signup",
-          });
-        }}
+        onClick={handleClickOpen}
       >
         サインアップ
       </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Information"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`現在データベース未作成のため実行できません。引き続きハンズオンを進めてください。`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            了解
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
