@@ -15,7 +15,10 @@ COPY . .
 
 # install production dependencies
 RUN yarn install --pure-lockfile --production
+
+# Note also that prisma generate is automatically invoked when you're installing the @prisma/client npm package
 RUN npx prisma generate
+
 # Save production depenencies installed so we can later copy them in the production image
 RUN cp -R node_modules /tmp/node_modules
 

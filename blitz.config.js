@@ -1,4 +1,4 @@
-const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz")
+const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz");
 
 module.exports = {
   experimental: {
@@ -6,8 +6,8 @@ module.exports = {
   },
   middleware: [
     sessionMiddleware({
-      sessionExpiryMinutes: 1234,
+      sessionExpiryMinutes: 60,
       isAuthorized: simpleRolesIsAuthorized,
     }),
   ],
-}
+};
