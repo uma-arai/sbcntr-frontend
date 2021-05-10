@@ -9,17 +9,20 @@ import db from "./index";
  */
 const seed = async () => {
   await addItems();
-  await db.notification.create({
-    data: {
-      title: "通知1",
-      description: "コンテナアプリケーションの作成の時間です。",
-      category: "information",
-      updatedAt: undefined,
-    },
-  });
+  for (let i = 0; i < 2; i++) {
+    await db.notification.create({
+      data: {
+        title: `通知${i + 1}`,
+        description: "コンテナアプリケーションの作成の時間です。",
+        category: "information",
+        updatedAt: undefined,
+      },
+    });
+  }
 };
 
 const addItems = async () => {
+  // TODO: お花系に全部そろえる
   await db.item.create({
     data: {
       name: "Flower",
