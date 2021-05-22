@@ -10,7 +10,7 @@ const getNotificationCount = async (_ = null, { session }: Ctx) => {
   //  error: null,
   //};
   return await apiClient<{ data: string }>(
-    `/v1/Notification/Count`,
+    `/v1/Notifications/Count`,
     "GET",
     undefined,
     undefined,
