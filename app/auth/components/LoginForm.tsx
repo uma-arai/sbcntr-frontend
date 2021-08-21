@@ -58,7 +58,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       <Form
         submitText="ログイン"
         schema={LoginInput}
-        initialValues={{ email: "horsewin@a.com", password: "abcd123456" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
           try {
             await loginMutation(values)
