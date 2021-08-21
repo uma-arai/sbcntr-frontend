@@ -37,7 +37,7 @@ export const SignupForm = (props: SignupFormProps) => {
       <Form
         submitText="作成"
         schema={SignupInput}
-        initialValues={{ email: "horsewin@a.com", password: "abcd123456" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
           try {
             await signupMutation(values);
