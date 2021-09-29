@@ -1,4 +1,6 @@
-# How to start
+# sbcntr-frontend
+
+書籍用のフロントエンドアプリケーション用のダウンロードリポジトリです。
 
 1. Run below commands to launch db
     
