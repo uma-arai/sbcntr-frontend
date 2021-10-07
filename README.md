@@ -1,54 +1,43 @@
-# How to start
+# sbcntr-frontend
 
-1. Run below commands to launch db
-    
-    ```bash
-    docker-compose up
-    ```
+書籍用のフロントエンドアプリケーション用のダウンロードリポジトリです。
 
-2. Login to mysql on docker by root and create user for migration
+## 概要
 
-    ```bash
-    $ docker exec -it mysql_host mysql -u root -p
-    Enter password: 
-    Welcome to the MySQL monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 14
-    Server version: 5.7.34 MySQL Community Server (GPL)
-    
-    Copyright (c) 2000, 2021, Oracle and/or its affiliates.
-    
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
-    
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    
-    mysql> create user 'sbcntr-migrate'@'%' identified by 'sbcntrmig';
-    Query OK, 0 rows affected (0.02 sec)
-    
-    mysql> GRANT ALL PRIVILEGES ON *.* TO 'sbcntr-migrate'@'%' WITH GRANT OPTION;
-    Query OK, 0 rows affected (0.00 sec)
-   
-    mysql> exit
-    Bye
-    ```
+本書を引用する形でサンプルアプリケーションについて説明します。
 
-3. Migrate
+今回はフロントエンドアプリケーションから、ユーザーのサインアップやログインを実施します。
+ユーザー情報はデータベースに保管されており、TypeScript の型安全のしくみを十分発揮させるために O/R マッパを導入しています。
+今回は Prisma[^prisma]と呼ばれる O/R マッパを利用します。
+Prisma のトップページには、「Next-generation ORM for Node.js and TypeScript」と記載されています。
+今後のサーバーサイドの TypeScript 開発において非常に優秀な O/R マッパとなっています。
+データベースのマイグレーション機能も備えており、サンプルアプリケーションのテーブル作成やサンプルデータ投入でも Prisma の機能を利用しています。
 
-    ```bash
-    $ npm run migrate:dev
+[^prisma]: https://www.prisma.io/
 
-    > sbcntr-frontend@1.0.0 migrate:dev xxx/sbcntr-frontend
-    > DATABASE_URL=mysql://sbcntr-migrate:sbcntrmig@127.0.0.1:3306/sbcntrapp npx blitz prisma migrate dev --preview-feature
+フロントエンドアプリケーションはダッシュボード形式の UI としています。
+オフィスに導入したアイテムをアイテムリストとして表示して共有して閲覧するような UI をイメージしています。
+バックエンドアプリケーションと通信するためのサンプルとして活用するために、アイテムの追加も可能としています。
+本来であれば、ユーザーを新規登録可能とするにはドメイン制御をしたりメール認証等もすべきです。
+今回はサンプルであるため、このような機能要件は省いています。
+備えている画面は次の通りです。
 
-    You are using beta software - if you have any problems, please open an issue here:
-    https://github.com/blitz-js/blitz/issues/new/choose
-    
-    Environment variables loaded from .env
-    Prisma schema loaded from db/schema.prisma
-    Datasource "db": MySQL database "sbcntrapp" at "127.0.0.1:3306"
-    
-    Already in sync, no schema change or pending migration was found.
-    
-    ✔ Generated Prisma Client (2.19.0) to ./node_modules/@prisma/client in 99ms
-    ```
+- ログイン前トップページ(index.tsx)
+  - DB 接続なしで画面表示をするために用意した画面です。
+  - いわゆるウェルカムページの役割で、Hello world を表示するために利用します。
+- ログインページ(auth/login.tsx)、サインアップページ(auth/signup.tsx)
+  - ユーザーログイン用途です。
+  - 現状はログインユーザーごとでログイン後画面の表示制御はしていないですが、認証済ユーザーでないとメインコンテンツページには遷移できないという意図で作成しています。
+- アイテムリストページ(top.tsx)
+  - 認証済ユーザーがデータベースに追加したアイテム一覧を表示するためのページです。
+  - 気に入ったアイテムはお気に入りマークをつけることができます。**本来、ユーザごとにお気に入りをしたアイテムを分けるべきですが、今回はその部分までつくりこんではおりません**。
+  - さらに、新しいアイテムが登録できます。
+- お気に入りページ(farovite.tsx)
+  - お気に入りマークがついたアイテムを表示するページです。
+- 通知ページ(notification.tsx)
+  - 認証済ユーザーにお知らせをするための通知ページです。
+  - 未読通知を既読にできます。
+
+## 利用想定
+
+本書の内容に沿って、ご利用ください。
