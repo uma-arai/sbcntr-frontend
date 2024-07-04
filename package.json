@@ -1,6 +1,6 @@
 {
   "name": "sbcntr-frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "npx blitz dev --port 3100",
     "start": "npx blitz start --port 3100",
